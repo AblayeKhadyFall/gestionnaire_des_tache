@@ -41,4 +41,4 @@ class Tache {
   }
 }
 
-enum EtatTache { pasDebute, enCours, termine, etat }
+enum EtatTache { pasDebute, enCours, termine }

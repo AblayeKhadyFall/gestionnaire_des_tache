@@ -16,6 +16,7 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
   TextEditingController dateDebutController = TextEditingController();
   TextEditingController dateFinController = TextEditingController();
   TextEditingController etatTacheController = TextEditingController();
+  EtatTache? _etatSelectionne;
 
   @override
   Widget build(BuildContext context) {
@@ -81,35 +82,38 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                   return null;
                 },
               ),
-              TextFormField(
-                // Contrôleur, décorations et validations pour l'état de la tâche
-                controller: etatTacheController,
-                decoration: const InputDecoration(
-                  labelText: 'État de la tâche',
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Veuillez entrer un état de la tâche';
-                  }
-                  return null;
+              DropdownButtonFormField<EtatTache>(
+                decoration: InputDecoration(labelText: 'État de la tâche'),
+                value: _etatSelectionne,
+                onChanged: (EtatTache? nouvelEtat) {
+                  setState(() {
+                    _etatSelectionne = nouvelEtat;
+                  });
                 },
+                items:
+                    EtatTache.values.map<DropdownMenuItem<EtatTache>>((etat) {
+                  return DropdownMenuItem<EtatTache>(
+                    value: etat,
+                    child: Text(etat.toString().split('.').last),
+                  );
+                }).toList(),
+                validator: (value) =>
+                    value == null ? 'Veuillez sélectionner un état' : null,
               ),
 
               // Ajoutez ici d'autres champs de formulaire pour la date de début, date de fin, et l'état de la tâche.
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    // Création de l'instance Tache à partir des entrées utilisateur
                     Tache nouvelleTache = Tache(
                       id: DateTime.now().toString(),
                       titre: titreController.text,
                       description: descriptionController.text,
                       dateDebut: dateDebutController.text,
                       dateFin: dateFinController.text,
-                      etat: EtatTache.values.firstWhere(
-                          (etat) => etat.toString() == etatTacheController.text,
-                          orElse: () => EtatTache
-                              .pasDebute), // Exemple de gestion de l'état
+                      etat: _etatSelectionne ??
+                          EtatTache
+                              .pasDebute, // Utilisation de l'état sélectionné
                     );
 
                     try {

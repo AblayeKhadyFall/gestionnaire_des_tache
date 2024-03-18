@@ -42,8 +42,7 @@ class DatabaseService {
           description: doc['description'],
           dateDebut: doc['dateDebut'],
           dateFin: doc['dateFin'],
-          etat: EtatTache.values
-              .firstWhere((etat) => etat.toString() == doc['etat']),
+          etat: EtatTache.values[doc['etat']],
         );
       }).toList();
     });
