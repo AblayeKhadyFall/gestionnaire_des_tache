@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51883376944",
+    "project_id": "gestionnaire-des-taches-d04ff",
+    "storage_bucket": "gestionnaire-des-taches-d04ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51883376944:android:659f94f5fcc3477d6648f5",
+        "android_client_info": {
+          "package_name": "com.example.gestionnaire_des_tache"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMISg0-Uvc1lZa0RfDi1xEoQE7Iqam3eU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
