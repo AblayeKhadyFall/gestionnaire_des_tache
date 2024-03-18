@@ -28,7 +28,27 @@ class HomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Tache tache = snapshot.data![index];
                   return ListTile(
-                    title: Text(tache.titre),
+                    title: Row(
+                      children: [
+                        Expanded(
+                          child: Text(tache.titre),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // Logique de suppression de la tâche
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // Logique d'édition de la tâche
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
+                    // Reste du code inchangé..
+
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
