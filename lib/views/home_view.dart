@@ -35,7 +35,31 @@ class HomeScreen extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            // Logique de suppression de la tâche
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Supprimer la tâche'),
+                                  content: const Text(
+                                      'Êtes-vous sûr de vouloir supprimer cette tâche ?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Annuler'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        _dbService.supprimerTache(tache.id);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Supprimer'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           icon: Icon(Icons.delete),
                         ),
@@ -82,7 +106,7 @@ class HomeScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => AddEditTacheScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
