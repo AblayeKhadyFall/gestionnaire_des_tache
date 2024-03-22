@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gestionnaire_des_tache/models/tache.dart';
+import 'package:flutter/foundation.dart';
 
-class DatabaseService {
+class DatabaseService with ChangeNotifier {
   final CollectionReference _tachesCollection =
       FirebaseFirestore.instance.collection('taches');
 
@@ -14,16 +15,17 @@ class DatabaseService {
       'dateFin': tache.dateFin, // Convertir en String
       'etat': tache.etat.index, // Utiliser index pour un stockage plus facile
     });
+    notifyListeners();
   }
 
   // Mettre à jour une tâche
-  Future<void> mettreAJourTache(String id, Tache tache) async {
-    return await _tachesCollection.doc(id).update({
+  Future<void> mettreAJourTache(Tache tache) async {
+    return await _tachesCollection.doc(tache.id).update({
       'titre': tache.titre,
       'description': tache.description,
       'dateDebut': tache.dateDebut,
       'dateFin': tache.dateFin,
-      'etat': tache.etat.toString(),
+      'etat': tache.etat.index, // JE DOIT UTILISER L'INDEX
     });
   }
 

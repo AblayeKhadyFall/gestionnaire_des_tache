@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gestionnaire_des_tache/db.dart';
 import 'package:gestionnaire_des_tache/models/tache.dart';
-import 'package:provider/provider.dart'; // Importez le package provider
+import 'package:provider/provider.dart';
 
-class AddEditTacheScreen extends StatefulWidget {
+class EditTacheScreen extends StatefulWidget {
+  final Tache tacheToEdit;
+
+  const EditTacheScreen({Key? key, required this.tacheToEdit})
+      : super(key: key);
+
   @override
-  _AddEditTacheScreenState createState() => _AddEditTacheScreenState();
+  _EditTacheScreenState createState() => _EditTacheScreenState();
 }
 
-class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
+class _EditTacheScreenState extends State<EditTacheScreen> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController idController = TextEditingController();
   TextEditingController titreController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateDebutController = TextEditingController();
@@ -18,10 +24,20 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
   EtatTache? _etatSelectionne;
 
   @override
+  void initState() {
+    super.initState();
+    titreController.text = widget.tacheToEdit.titre;
+    descriptionController.text = widget.tacheToEdit.description;
+    dateDebutController.text = widget.tacheToEdit.dateDebut;
+    dateFinController.text = widget.tacheToEdit.dateFin;
+    _etatSelectionne = widget.tacheToEdit.etat;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajouter / Éditer une Tâche'),
+        title: const Text('Éditer une Tâche'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -43,7 +59,7 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
               ),
               TextFormField(
                 controller: descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
                 validator: (value) {
@@ -78,7 +94,9 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                 },
               ),
               DropdownButtonFormField<EtatTache>(
-                decoration: InputDecoration(labelText: 'État de la tâche'),
+                decoration: const InputDecoration(
+                  labelText: 'État de la tâche',
+                ),
                 value: _etatSelectionne,
                 onChanged: (EtatTache? nouvelEtat) {
                   setState(() {
@@ -98,8 +116,8 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    Tache nouvelleTache = Tache(
-                      id: DateTime.now().toString(),
+                    Tache tacheModifiee = Tache(
+                      id: widget.tacheToEdit.id,
                       titre: titreController.text,
                       description: descriptionController.text,
                       dateDebut: dateDebutController.text,
@@ -108,44 +126,31 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                     );
 
                     try {
-                      await DatabaseService().ajouterTache(nouvelleTache);
+                      await Provider.of<DatabaseService>(context, listen: false)
+                          .mettreAJourTache(tacheModifiee);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Tâche ajoutée avec succès")));
+                        const SnackBar(
+                          content: Text("Tâche modifiée avec succès"),
+                        ),
+                      );
                       Navigator.of(context).pop();
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Erreur lors de l'ajout de la tâche")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Erreur lors de la modification de la tâche: $e",
+                          ),
+                        ),
+                      );
                     }
                   }
                 },
-                child: Text('Enregistrer'),
+                child: const Text('Modifier'),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class TacheProvider extends ChangeNotifier {
-  EtatTache? _etatSelectionne;
-
-  EtatTache? get etatSelectionne => _etatSelectionne;
-
-  void setEtatSelectionne(EtatTache? etat) {
-    _etatSelectionne = etat;
-    notifyListeners();
-  }
-}
-
-// Utilisez le ChangeNotifierProvider pour envelopper votre écran
-class AddEditTacheScreenProvider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => TacheProvider(),
-      child: AddEditTacheScreen(),
     );
   }
 }

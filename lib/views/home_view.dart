@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_des_tache/models/tache.dart'; // Assurez-vous que le modèle Tache est correctement importé.
-import 'package:gestionnaire_des_tache/db.dart'; // Remplacez par le chemin correct de votre DatabaseService.
+import 'package:provider/provider.dart'; // Importez le package provider
+
+import 'package:gestionnaire_des_tache/models/tache.dart';
+import 'package:gestionnaire_des_tache/db.dart';
 import 'package:gestionnaire_des_tache/views/edit_view.dart';
-// Importez vos autres fichiers nécessaires ici, comme vos modèles, widgets, et le provider de tâches.
+import 'package:gestionnaire_des_tache/views/editer_tache.dart';
 
-class HomeScreen extends StatelessWidget {
-  final DatabaseService _dbService = DatabaseService();
-
+class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +14,8 @@ class HomeScreen extends StatelessWidget {
         title: Text('Gestionnaire de Tâches'),
       ),
       body: StreamBuilder<List<Tache>>(
-        stream: _dbService.recupererTaches(),
+        stream: Provider.of<DatabaseService>(context)
+            .recupererTaches(), // Utilisez le provider pour accéder à la méthode recupererTaches()
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Erreur: ${snapshot.error}');
@@ -51,7 +52,10 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        _dbService.supprimerTache(tache.id);
+                                        Provider.of<DatabaseService>(context,
+                                                listen: false)
+                                            .supprimerTache(tache
+                                                .id); // Utilisez le provider pour accéder à la méthode supprimerTache()
                                         Navigator.of(context).pop();
                                       },
                                       child: const Text('Supprimer'),
@@ -65,23 +69,25 @@ class HomeScreen extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            // Logique d'édition de la tâche
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditTacheScreen(tacheToEdit: tache)),
+                            );
                           },
                           icon: Icon(Icons.edit),
                         ),
                       ],
                     ),
-                    // Reste du code inchangé..
-
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Description: ${tache.description}'),
                         Text('Date de début: ${tache.dateDebut}'),
                         Text('Date de fin: ${tache.dateFin}'),
-                        // Exemple de style appliqué directement sur un widget Text pour l'état de la tâche
                         Text(
-                          'État: ${tache.etat.toString().split('.').last}', // Pour un affichage plus lisible de l'état
+                          'État: ${tache.etat.toString().split('.').last}',
                           style: TextStyle(
                             color: tache.etat == EtatTache.termine
                                 ? Colors.green
@@ -92,7 +98,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Vous pouvez ajouter d'autres informations ici, comme la date de début, la date de fin, etc.
                   );
                 },
               );
