@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_des_tache/views/home_view.dart';
+import 'package:gestionnaire_des_tache/db.dart';
 import 'package:provider/provider.dart';
-import 'providers/taches_provider.dart';
+import 'package:gestionnaire_des_tache/views/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 // ignore: unused_import
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,15 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => TachesProvider()),
+        ChangeNotifierProvider(create: (context) => DatabaseService()),
       ],
       child: MaterialApp(
-        title: 'Gestionnaire de Tâches',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: HomeScreen(),
+        home: HomeView(),
       ),
     );
   }

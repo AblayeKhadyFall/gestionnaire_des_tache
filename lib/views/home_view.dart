@@ -3,7 +3,7 @@ import 'package:provider/provider.dart'; // Importez le package provider
 
 import 'package:gestionnaire_des_tache/models/tache.dart';
 import 'package:gestionnaire_des_tache/db.dart';
-import 'package:gestionnaire_des_tache/views/edit_view.dart';
+import 'package:gestionnaire_des_tache/views/ajout_tache.dart';
 import 'package:gestionnaire_des_tache/views/editer_tache.dart';
 
 class HomeView extends StatelessWidget {
