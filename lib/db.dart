@@ -17,13 +17,14 @@ class DatabaseService {
   }
 
   // Mettre à jour une tâche
-  Future<void> mettreAJourTache(String id, Tache tache) async {
-    return await _tachesCollection.doc(id).update({
+  // Mettre à jour une tâche
+  Future<void> mettreAJourTache(Tache tache) async {
+    return await _tachesCollection.doc(tache.id).update({
       'titre': tache.titre,
       'description': tache.description,
       'dateDebut': tache.dateDebut,
       'dateFin': tache.dateFin,
-      'etat': tache.etat.toString(),
+      'etat': tache.etat.index, // JE DOIT UTILISER L'INDEX
     });
   }
 

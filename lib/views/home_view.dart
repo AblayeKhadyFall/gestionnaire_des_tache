@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gestionnaire_des_tache/models/tache.dart'; // Assurez-vous que le modèle Tache est correctement importé.
 import 'package:gestionnaire_des_tache/db.dart'; // Remplacez par le chemin correct de votre DatabaseService.
 import 'package:gestionnaire_des_tache/views/edit_view.dart';
+import 'package:gestionnaire_des_tache/views/editer_tache.dart';
 // Importez vos autres fichiers nécessaires ici, comme vos modèles, widgets, et le provider de tâches.
 
 class HomeScreen extends StatelessWidget {
@@ -66,6 +67,12 @@ class HomeScreen extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             // Logique d'édition de la tâche
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditTacheScreen(tacheToEdit: tache)),
+                            );
                           },
                           icon: Icon(Icons.edit),
                         ),
