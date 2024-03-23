@@ -14,7 +14,7 @@ void main() async {
     options: const FirebaseOptions(
       apiKey: 'AIzaSyDMISg0-Uvc1lZa0RfDi1xEoQE7Iqam3eU',
       appId: '1:51883376944:android:659f94f5fcc3477d6648f5',
-      messagingSenderId: '51883376944',
+      messagingSenderId: '518833769',
       projectId: 'gestionnaire-des-taches-d04ff',
       storageBucket: 'gestionnaire-des-taches-d04ff.appspot.com',
     ),
@@ -25,10 +25,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => DatabaseService()),
-      ],
+    return ChangeNotifierProvider(
+      create: (context) => DatabaseService(),
       child: MaterialApp(
         home: HomeView(),
       ),
