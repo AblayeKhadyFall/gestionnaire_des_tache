@@ -82,15 +82,51 @@ class _EditTacheScreenState extends State<EditTacheScreen> {
                 },
               ),
               TextFormField(
+                controller: dateDebutController,
+                decoration: const InputDecoration(
+                  labelText: 'Date de début',
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Veuillez entrer une date de début';
+                  }
+                  return null;
+                },
+                onTap: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    dateDebutController.text = selectedDate.toString();
+                  }
+                },
+              ),
+              TextFormField(
                 controller: dateFinController,
                 decoration: const InputDecoration(
                   labelText: 'Date de fin',
+                  suffixIcon: Icon(Icons.calendar_today),
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Veuillez entrer une date de fin';
                   }
                   return null;
+                },
+                onTap: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    dateFinController.text = selectedDate.toString();
+                  }
                 },
               ),
               DropdownButtonFormField<EtatTache>(

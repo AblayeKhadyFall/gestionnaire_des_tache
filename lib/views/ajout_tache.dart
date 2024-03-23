@@ -57,6 +57,7 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                 controller: dateDebutController,
                 decoration: const InputDecoration(
                   labelText: 'Date de début',
+                  suffixIcon: Icon(Icons.calendar_today),
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -64,11 +65,23 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                   }
                   return null;
                 },
+                onTap: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    dateDebutController.text = selectedDate.toString();
+                  }
+                },
               ),
               TextFormField(
                 controller: dateFinController,
                 decoration: const InputDecoration(
                   labelText: 'Date de fin',
+                  suffixIcon: Icon(Icons.calendar_today),
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -76,6 +89,19 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
                   }
                   return null;
                 },
+                onTap: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    dateFinController.text = selectedDate.toString();
+                  }
+                },
+                // Ajoutez un icône de calendrier ici
+                // Par exemple : suffixIcon: Icon(Icons.calendar_today),
               ),
               DropdownButtonFormField<EtatTache>(
                 decoration: InputDecoration(labelText: 'État de la tâche'),
