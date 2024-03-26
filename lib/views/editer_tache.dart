@@ -74,18 +74,6 @@ class _EditTacheScreenState extends State<EditTacheScreen> {
                   controller: dateDebutController,
                   decoration: const InputDecoration(
                     labelText: 'Date de début',
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Veuillez entrer une date de début';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: dateDebutController,
-                  decoration: const InputDecoration(
-                    labelText: 'Date de début',
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
                   validator: (value) {

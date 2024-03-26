@@ -21,7 +21,7 @@ class _AddEditTacheScreenState extends State<AddEditTacheScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajouter / Éditer une Tâche'),
+        title: Text('Ajouter une Tâche'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
